@@ -1,7 +1,7 @@
 {
   "name": "ocpp-central-system-boilerplate-code",
   "version": "1.0.0",
-  "description": "",
+  "description": "Boilerplate code for an OCPP central system to quickly get it running. Please contact the author for a license.",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,6 +9,7 @@
   },
   "author": "Snehanshu Phukon <hello@snehanshu.tech>",
   "license": "UNLICENSED",
+  "private": true,
   "dependencies": {
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
