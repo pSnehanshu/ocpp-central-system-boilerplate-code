@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "author": "",
+  "author": "Snehanshu Phukon <hello@snehanshu.tech>",
   "license": "UNLICENSED",
   "dependencies": {
     "body-parser": "^1.19.0",
