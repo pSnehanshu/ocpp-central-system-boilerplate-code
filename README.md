@@ -1,4 +1,4 @@
-# LionCharge
+# OCPP Central system boilerplate code
 
 Install necessary packages
 
