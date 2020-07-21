@@ -1,4 +1,5 @@
 const WebSocket = require('ws');
+const callHandlers = require('./cp-call-handlers');
 
 // The websocket server that will handle wesocket connections
 const wss = new WebSocket.Server({ noServer: true });
@@ -7,16 +8,15 @@ const wss = new WebSocket.Server({ noServer: true });
 wss.on('connection', async function (ws, req, cp) {
     console.log('Connection succesfull with', cp.cpid);
 
-    // Use cp.on() to listen to CALLS
+    for (let call in callHandlers) {
+        let handler = callHandlers[call];
 
-    cp.on('BootNotification', (msg, response) => {
-        console.log(msg);
-        response.success({
-            currentTime: (new Date()).toISOString(),
-            interval: 90,
-            status: 'Accepted'
-        });
-    })
+        if (typeof handler === 'function') {
+            cp.on(call, (msg, response) => handler(msg, response, cp));
+        } else {
+            throw new TypeError(`Handler for CALL "${call}" isn't exporting a function`);
+        }
+    }
 });
 
 module.exports = wss;
