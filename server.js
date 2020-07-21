@@ -1,13 +1,13 @@
 require('dotenv').config();
 const http = require('http');
 const url = require('url');
-const app = require('./app-facing/index');
-const wss = require('./cp-facing/wss');
-const OCPPLib = require('./cp-facing/ocpplib');
-const connected_cps = require('./app-facing/connected_cps');
+const httpApp = require('./lib/http-app');
+const wss = require('./lib/wss');
+const OCPPLib = require('./lib/ocpplib');
+const connected_cps = require('./lib/connected-cps');
 
 const port = process.env.PORT || 9000;
-const server = http.createServer(app);
+const server = http.createServer(httpApp);
 server.listen(port, () => console.log(`Central system running on port ${port}`));
 
 // Handling Websocket connections
