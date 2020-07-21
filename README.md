@@ -12,4 +12,4 @@ Start the server
 npm start
 ```
 
-Note: Please contact the [author](mailto:hello@snehanshu.tech) for a license.
+Please contact the [author](mailto:hello@snehanshu.tech?subject=Help+required+regarding+an+OCPP+project) for paid help.
