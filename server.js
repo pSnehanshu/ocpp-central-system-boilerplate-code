@@ -1,10 +1,12 @@
 require('dotenv').config();
 const http = require('http');
 const url = require('url');
+const _ = require('lodash');
 const httpApp = require('./lib/http-app');
 const wss = require('./lib/wss');
 const OCPPLib = require('./lib/ocpplib');
 const connected_cps = require('./lib/connected-cps');
+
 
 const port = process.env.PORT || 9000;
 const server = http.createServer(httpApp);
@@ -21,12 +23,20 @@ server.on('upgrade', async function (request, socket, head) {
         await cp.valid(/* Need to provide the password from basic auth header */)
         wss.handleUpgrade(request, socket, head, async function (ws) {
             cp.connection = ws;
-            wss.emit('connection', ws, request, cp);
 
             // Determining OCPP version
             var wsprotocol = request.headers['sec-websocket-protocol'] || request.headers['Sec-WebSocket-Protocol'] || request.headers['Sec-Websocket-Protocol'];
-            wsprotocol = wsprotocol.split(',').filter(p => p.trim().length > 0).map(p => p.trim().toLowerCase());
-            cp.ocppVersions = wsprotocol;
+
+            try {
+                wsprotocol = wsprotocol.split(',').filter(p => p.trim().length > 0).map(p => p.trim().toLowerCase());
+            } catch (error) {
+                console.error(`Connection with ${cpid} was closed because of ocpp version not defined`);
+                return ws.close(1002, 'OCPP version was not specified in sec-websocket-protocol header');
+            }
+
+            cp.ocppVersions = _.get(wsprotocol, '[0]', 'ocpp1.6');
+
+            wss.emit('connection', ws, request, cp);
 
             // Save the cp
             connected_cps.put(cpid, cp);

@@ -1,3 +1,3 @@
 module.exports = (msg, { success, error }, cp) => {
-  success({ time: (new Date()).toISOString() });
+  success({ currentTime: (new Date()).toISOString() });
 };
