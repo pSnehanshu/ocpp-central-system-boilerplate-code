@@ -9,7 +9,7 @@ const handlers = {};
 for (let file of files) {
   // Don't require myself
   if (file.name === myName) {
-    break;
+    continue;
   }
 
   const fullFileName = path.join(__dirname, file.name);
