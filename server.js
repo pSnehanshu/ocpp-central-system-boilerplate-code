@@ -6,7 +6,7 @@ const httpApp = require('./lib/http-app');
 const wss = require('./lib/wss');
 const OCPPLib = require('./lib/ocpplib');
 const connected_cps = require('./lib/connected-cps');
-
+const attachHooks = require('./src/attach-hooks');
 
 const port = process.env.PORT || 9000;
 const server = http.createServer(httpApp);
@@ -17,7 +17,7 @@ server.on('upgrade', async function (request, socket, head) {
     try {
         const pathname = url.parse(request.url).pathname;
         const cpid = pathname.split('/').reverse()[0];
-        const cp = new OCPPLib(cpid);
+        const cp = attachHooks(new OCPPLib(cpid));
 
         // Check if the CP is valid (registered)
         await cp.valid(/* Need to provide the password from basic auth header */)
